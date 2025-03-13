@@ -1,2 +1,5 @@
 # cowrie-aws
-Deploy honeypot Cowrie on AWS
+
+Little script for deploy Cowrie on AWS Ubuntu free-tier EC2
+
+*In progress*
