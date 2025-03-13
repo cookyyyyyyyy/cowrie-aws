@@ -8,13 +8,13 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-3"
+  region = var.region
 }
 
 resource "aws_vpc" "vpc-tofu" {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = var.vpc_cidr_block
     tags = {
-        Name = "opentofu"
+        Name = var.name_vpc
     }
 
     provisioner "local-exec" {
@@ -24,12 +24,12 @@ resource "aws_vpc" "vpc-tofu" {
 
 resource "aws_subnet" "vpc-tofu-sub" {
   vpc_id = aws_vpc.vpc-tofu.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "eu-west-3a"
+  cidr_block = var.sub_cidr_block
+  availability_zone = var.sub_region
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "test-tofu-sub"
+    Name = "tofu-sub"
   }
 
   provisioner "local-exec" {
@@ -38,8 +38,8 @@ resource "aws_subnet" "vpc-tofu-sub" {
 }
 
 resource "aws_key_pair" "ssh-key" {
-    key_name = "tofu-test"
-    public_key = file("~/.ssh/id_rsa.pub")
+    key_name = "tofu"
+    public_key = file(var.pub_key)
 }
 
 resource "aws_internet_gateway" "tofu-igw" {
